@@ -64,15 +64,8 @@ async function getWeather() {
         document.getElementById('mood-text').textContent = 'Hämtar rekommendationer...';
         document.getElementById('activity-text').textContent = 'Hämtar aktivitetsförslag...';
 
-        // Använd CORS proxy för SMHI API
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const smhiUrl = `https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${LON}/lat/${LAT}/data.json`;
-        
-        const response = await fetch(proxyUrl + smhiUrl, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
+        // Hämta prognosdata från SMHI
+        const response = await fetch(`https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${LON}/lat/${LAT}/data.json`);
         
         if (!response.ok) {
             throw new Error(`API Error: ${response.status} - ${response.statusText}`);
@@ -167,15 +160,17 @@ function generateRecommendations(temperature, weatherCode) {
     }
     
     // Väder-baserade rekommendationer
-    if (weatherCode >= 8 && weatherCode <= 10) {
+    if (weatherCode >= 500 && weatherCode < 600) {
         moodText += ' Regnet kan göra en lite melankolisk, men det är okej att känna så ibland.';
         activityText = 'Lyssna på lugn musik, meditera eller prova en ny hobby inomhus.';
-    } else if (weatherCode >= 4 && weatherCode <= 6) {
-        moodText += ' Molnigt väder kan göra en lite mer avslappnad och reflekterande.';
-        activityText = 'Perfekt väder för att skriva i en dagbok eller planera kommande projekt.';
-    } else if (weatherCode >= 1 && weatherCode <= 3) {
-        moodText += ' Soligt väder kan ge dig extra energi och positivitet!';
-        activityText = 'Utnyttja solen genom att träna utomhus eller umgås med vänner.';
+    } else if (weatherCode >= 800 && weatherCode < 900) {
+        if (weatherCode === 800) {
+            moodText += ' Soligt väder kan ge dig extra energi och positivitet!';
+            activityText = 'Utnyttja solen genom att träna utomhus eller umgås med vänner.';
+        } else {
+            moodText += ' Molnigt väder kan göra en lite mer avslappnad och reflekterande.';
+            activityText = 'Perfekt väder för att skriva i en dagbok eller planera kommande projekt.';
+        }
     }
     
     // Uppdatera UI med rekommendationer
