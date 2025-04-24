@@ -1,11 +1,31 @@
-// API nyckel för OpenWeatherMap (du behöver ersätta detta med din egen API nyckel)
+// API nyckel för OpenWeatherMap (ersätt med din API-nyckel)
 const API_KEY = 'YOUR_API_KEY';
 const CITY = 'Stockholm';
+
+// Funktion för att visa felmeddelande
+function showError(message) {
+    document.getElementById('weather-desc').textContent = message;
+    document.getElementById('mood-text').textContent = 'Kunde inte hämta väderdata';
+    document.getElementById('activity-text').textContent = 'Kunde inte hämta väderdata';
+}
 
 // Funktion för att hämta väderdata
 async function getWeather() {
     try {
+        // Visa laddningsmeddelande
+        document.getElementById('weather-desc').textContent = 'Hämtar väderdata...';
+        
+        if (!API_KEY || API_KEY === 'YOUR_API_KEY') {
+            showError('Vänligen lägg till din API-nyckel i script.js');
+            return;
+        }
+
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}&lang=sv`);
+        
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         // Uppdatera UI med väderdata
@@ -16,7 +36,13 @@ async function getWeather() {
         generateRecommendations(data);
     } catch (error) {
         console.error('Error fetching weather data:', error);
-        document.getElementById('weather-desc').textContent = 'Kunde inte hämta väderdata';
+        if (error.message.includes('API Error: 401')) {
+            showError('Ogiltig API-nyckel. Vänligen kontrollera din API-nyckel.');
+        } else if (error.message.includes('API Error: 404')) {
+            showError('Kunde inte hitta staden. Vänligen kontrollera stadens namn.');
+        } else {
+            showError('Ett fel uppstod vid hämtning av väderdata. Försök igen senare.');
+        }
     }
 }
 
