@@ -6,29 +6,46 @@
     <title>Väder & Humör App</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <div class="container">
         <h1>Väder & Humör App</h1>
-        <div class="weather-card">
-            <div class="location">
-                <h2>Stockholm</h2>
-            </div>
-            <div class="weather-info">
-                <div class="temperature">
-                    <span id="temp">--°C</span>
+        <div class="cards-container">
+            <div class="search-card">
+                <h3>Sök Stad</h3>
+                <div class="search-container">
+                    <input type="text" id="city-search" placeholder="Skriv stadens namn...">
+                    <button id="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <div class="description">
-                    <span id="weather-desc">Laddar väder...</span>
+                <div class="suggestions" id="suggestions"></div>
+            </div>
+            <div class="weather-card">
+                <div class="location">
+                    <h2 id="city-name">Stockholm</h2>
+                </div>
+                <div class="weather-info">
+                    <div class="temperature">
+                        <span id="temp">--°C</span>
+                    </div>
+                    <div class="description">
+                        <span id="weather-desc">Laddar väder...</span>
+                    </div>
+                </div>
+                <div class="mood-recommendation">
+                    <h3>Humör Rekommendation</h3>
+                    <p id="mood-text">Väntar på väderdata...</p>
+                </div>
+                <div class="activity-suggestion">
+                    <h3>Förslag på Aktivitet</h3>
+                    <p id="activity-text">Väntar på väderdata...</p>
                 </div>
             </div>
-            <div class="mood-recommendation">
-                <h3>Humör Rekommendation</h3>
-                <p id="mood-text">Väntar på väderdata...</p>
-            </div>
-            <div class="activity-suggestion">
-                <h3>Förslag på Aktivitet</h3>
-                <p id="activity-text">Väntar på väderdata...</p>
+            <div class="map-container">
+                <h3>Plats</h3>
+                <div id="map"></div>
             </div>
         </div>
         <div class="credit">
@@ -36,6 +53,7 @@
             <span>Data från SMHI</span>
         </div>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
