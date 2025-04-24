@@ -87,31 +87,130 @@ function generateRecommendations(temperature, weatherCode) {
     let moodText = '';
     let activityText = '';
     
-    // Temperatur-baserade rekommendationer
+    // Arrayer med olika rekommendationer för olika temperaturer
+    const coldSuggestions = {
+        moods: [
+            'Det är kallt ute, vilket kan göra en lite trött och nedstämd.',
+            'Kylan kan göra en lite mer introvert och reflekterande.',
+            'Det kalla vädret kan göra en lite mer kreativ och fokuserad på inomhusaktiviteter.',
+            'Kylan kan ge en lugn och avslappnad känsla, perfekt för att ta det lugnt.'
+        ],
+        activities: [
+            'Ta en varm choklad och mysa under en filt. Kanske läsa en bra bok eller titta på en film?',
+            'Prova att baka något gott eller laga en varm soppa.',
+            'Spela ett brädspel eller pussel med familjen eller vännerna.',
+            'Ta en varm bastu eller ett skönt bad.',
+            'Lyssna på en podd eller ljudbok under en filt.'
+        ]
+    };
+
+    const coolSuggestions = {
+        moods: [
+            'Det är svalt men inte för kallt. Perfekt väder för att vara produktiv!',
+            'Det friska vädret kan ge dig extra energi och fokus.',
+            'Svalt väder är perfekt för att vara aktiv och utforskande.',
+            'Det här vädret kan göra dig mer motiverad och målmedveten.'
+        ],
+        activities: [
+            'Gå ut på en promenad i naturen eller besök ett museum.',
+            'Cykla runt i stan och upptäck nya platser.',
+            'Besök en konstutställning eller ett bibliotek.',
+            'Ta en fika på ett mysigt café.',
+            'Gör en fotoutflykt och fånga stadsbilder.'
+        ]
+    };
+
+    const mildSuggestions = {
+        moods: [
+            'Det är behagligt väder som kan ge dig energi och motivation.',
+            'Det perfekta vädret för att vara social och aktiv.',
+            'Det här vädret kan göra dig mer optimistisk och glad.',
+            'Behagligt väder som ger dig balans mellan energi och avslappning.'
+        ],
+        activities: [
+            'Utnyttja vädret genom att cykla, jogga eller ha en picknick i parken.',
+            'Organisera en grillfest eller utomhusmiddag med vänner.',
+            'Besök en park och läs en bok i solen.',
+            'Gör en båttur eller kajakutfärd.',
+            'Spela frisbee eller boule i parken.'
+        ]
+    };
+
+    const warmSuggestions = {
+        moods: [
+            'Det är varmt och soligt, vilket kan ge dig en extra energiboost!',
+            'Soligt väder kan göra dig mer social och utåtriktad.',
+            'Värmen kan ge dig en känsla av frihet och glädje.',
+            'Det här vädret kan göra dig mer spontan och äventyrlig.'
+        ],
+        activities: [
+            'Besök en badplats, ta en glass eller ha en utomhusmiddag med vänner.',
+            'Gör en utflykt till skärgården eller en närliggande sjö.',
+            'Organisera en strandvolleybollmatch eller badminton.',
+            'Ta en solbad på en gräsmatta i parken.',
+            'Besök en utomhusbio eller konsert.'
+        ]
+    };
+
+    // Välj slumpmässiga rekommendationer baserat på temperatur
+    let suggestions;
     if (temperature < 0) {
-        moodText = 'Det är kallt ute, vilket kan göra en lite trött och nedstämd.';
-        activityText = 'Ta en varm choklad och mysa under en filt. Kanske läsa en bra bok eller titta på en film?';
+        suggestions = coldSuggestions;
     } else if (temperature < 10) {
-        moodText = 'Det är svalt men inte för kallt. Perfekt väder för att vara produktiv!';
-        activityText = 'Gå ut på en promenad i naturen eller besök ett museum.';
+        suggestions = coolSuggestions;
     } else if (temperature < 20) {
-        moodText = 'Det är behagligt väder som kan ge dig energi och motivation.';
-        activityText = 'Utnyttja vädret genom att cykla, jogga eller ha en picknick i parken.';
+        suggestions = mildSuggestions;
     } else {
-        moodText = 'Det är varmt och soligt, vilket kan ge dig en extra energiboost!';
-        activityText = 'Besök en badplats, ta en glass eller ha en utomhusmiddag med vänner.';
+        suggestions = warmSuggestions;
     }
+
+    // Välj slumpmässiga rekommendationer
+    moodText = suggestions.moods[Math.floor(Math.random() * suggestions.moods.length)];
+    activityText = suggestions.activities[Math.floor(Math.random() * suggestions.activities.length)];
     
     // Väder-baserade rekommendationer
     if (weatherCode >= 8 && weatherCode <= 10) {
-        moodText += ' Regnet kan göra en lite melankolisk, men det är okej att känna så ibland.';
-        activityText = 'Lyssna på lugn musik, meditera eller prova en ny hobby inomhus.';
+        const rainMoods = [
+            ' Regnet kan göra en lite melankolisk, men det är okej att känna så ibland.',
+            ' Regnet kan ge en lugn och reflekterande stämning.',
+            ' Regnet kan göra en mer kreativ och inåtvänd.'
+        ];
+        const rainActivities = [
+            'Lyssna på lugn musik, meditera eller prova en ny hobby inomhus.',
+            'Skriv i en dagbok eller måla med akvarell.',
+            'Laga en god middag och titta på en film.',
+            'Spela ett instrument eller sjung i kören.'
+        ];
+        moodText += rainMoods[Math.floor(Math.random() * rainMoods.length)];
+        activityText = rainActivities[Math.floor(Math.random() * rainActivities.length)];
     } else if (weatherCode >= 4 && weatherCode <= 6) {
-        moodText += ' Molnigt väder kan göra en lite mer avslappnad och reflekterande.';
-        activityText = 'Perfekt väder för att skriva i en dagbok eller planera kommande projekt.';
+        const cloudyMoods = [
+            ' Molnigt väder kan göra en lite mer avslappnad och reflekterande.',
+            ' Molnigt väder kan ge en balanserad och lugn känsla.',
+            ' Molnigt väder är perfekt för att vara fokuserad och produktiv.'
+        ];
+        const cloudyActivities = [
+            'Perfekt väder för att skriva i en dagbok eller planera kommande projekt.',
+            'Gör en fotoutflykt och fånga stämningsfulla bilder.',
+            'Besök ett museum eller konstgalleri.',
+            'Läs en bok på ett mysigt café.'
+        ];
+        moodText += cloudyMoods[Math.floor(Math.random() * cloudyMoods.length)];
+        activityText = cloudyActivities[Math.floor(Math.random() * cloudyActivities.length)];
     } else if (weatherCode >= 1 && weatherCode <= 3) {
-        moodText += ' Soligt väder kan ge dig extra energi och positivitet!';
-        activityText = 'Utnyttja solen genom att träna utomhus eller umgås med vänner.';
+        const sunnyMoods = [
+            ' Soligt väder kan ge dig extra energi och positivitet!',
+            ' Solen kan göra dig mer social och utåtriktad.',
+            ' Soligt väder kan ge en känsla av frihet och möjligheter.'
+        ];
+        const sunnyActivities = [
+            'Utnyttja solen genom att träna utomhus eller umgås med vänner.',
+            'Organisera en picknick eller grillfest i parken.',
+            'Gör en utflykt till skärgården eller en närliggande sjö.',
+            'Spela utomhussporter eller ta en långpromenad.'
+        ];
+        moodText += sunnyMoods[Math.floor(Math.random() * sunnyMoods.length)];
+        activityText = sunnyActivities[Math.floor(Math.random() * sunnyActivities.length)];
     }
     
     // Uppdatera UI med rekommendationer
