@@ -64,8 +64,13 @@ async function getWeather() {
         document.getElementById('mood-text').textContent = 'Hämtar rekommendationer...';
         document.getElementById('activity-text').textContent = 'Hämtar aktivitetsförslag...';
 
-        // Hämta prognosdata från SMHI
-        const response = await fetch(`https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${LON}/lat/${LAT}/data.json`);
+        // Använd korrekt SMHI API URL
+        const response = await fetch(`https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${LON.toFixed(6)}/lat/${LAT.toFixed(6)}/data.json`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         
         if (!response.ok) {
             throw new Error(`API Error: ${response.status} - ${response.statusText}`);
@@ -185,13 +190,29 @@ document.getElementById('search-button').addEventListener('click', async () => {
     
     if (city) {
         try {
+            // Visa laddningsmeddelande
+            document.getElementById('weather-desc').textContent = 'Hämtar stadens information...';
+            document.getElementById('mood-text').textContent = 'Hämtar rekommendationer...';
+            document.getElementById('activity-text').textContent = 'Hämtar aktivitetsförslag...';
+            
             const coordinates = await getCityCoordinates(city);
             if (coordinates) {
+                // Uppdatera koordinater och stadens namn
                 LAT = coordinates.lat;
                 LON = coordinates.lon;
                 currentCity = coordinates.name;
+                
+                // Uppdatera stadens namn direkt
+                document.getElementById('city-name').textContent = currentCity;
+                
+                // Uppdatera kartan
                 updateMapMarker();
-                await getWeather(); // Vänta på att väderdata hämtas
+                
+                // Hämta väderdata med de nya koordinaterna
+                await getWeather();
+                
+                // Rensa sökfältet
+                cityInput.value = '';
             } else {
                 showError('Kunde inte hitta staden. Försök igen.');
             }
