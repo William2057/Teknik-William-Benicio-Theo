@@ -119,15 +119,15 @@ h1 {
     color: #7f8c8d;
 }
 
-.mood-recommendation, .activity-suggestion {
-    margin-top: 20px;
-    padding-top: 20px;
+.mood-recommendation, .activity-suggestion, .clothing-recommendation {
+    margin-top: 8px;
+    padding-top: 8px;
     border-top: 1px solid #eee;
 }
 
 h3 {
     color: #2c3e50;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 p {
@@ -141,7 +141,7 @@ p {
 }
 
 #map {
-    height: 300px;
+    height: 450px;
     width: 100%;
     border-radius: 15px;
     overflow: hidden;
@@ -149,8 +149,8 @@ p {
 
 .credit {
     position: absolute;
-    bottom: -30px;
-    right: 10px;
+    top: 40px;
+    right: 20px;
     font-size: 0.8rem;
     color: #7f8c8d;
     display: flex;

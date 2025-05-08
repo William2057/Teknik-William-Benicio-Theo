@@ -34,6 +34,7 @@ function showError(message) {
     document.getElementById('weather-desc').textContent = message;
     document.getElementById('mood-text').textContent = 'Kunde inte hämta väderdata';
     document.getElementById('activity-text').textContent = 'Kunde inte hämta väderdata';
+    document.getElementById('clothing-text').textContent = 'Kunde inte hämta väderdata';
 }
 
 // Funktion för att hämta koordinater för en stad
@@ -148,39 +149,48 @@ function getWeatherDescription(code) {
 function generateRecommendations(temperature, weatherCode) {
     let moodText = '';
     let activityText = '';
+    let clothingText = '';
     
     // Temperatur-baserade rekommendationer
     if (temperature < 0) {
         moodText = 'Det är kallt ute, vilket kan göra en lite trött och nedstämd.';
         activityText = 'Ta en varm choklad och mysa under en filt. Kanske läsa en bra bok eller titta på en film?';
+        clothingText = 'Ta på dig varma kläder: tjock jacka, mössa, vantar och varma stövlar. Flera lager är bra för att hålla värmen.';
     } else if (temperature < 10) {
         moodText = 'Det är svalt men inte för kallt. Perfekt väder för att vara produktiv!';
         activityText = 'Gå ut på en promenad i naturen eller besök ett museum.';
+        clothingText = 'En varm jacka, långbyxor och skor som håller fötterna torra. Ta med en mössa om det blåser.';
     } else if (temperature < 20) {
         moodText = 'Det är behagligt väder som kan ge dig energi och motivation.';
         activityText = 'Utnyttja vädret genom att cykla, jogga eller ha en picknick i parken.';
+        clothingText = 'En lätt jacka eller tröja, långbyxor och bekväma skor. Ta med en tunn jacka för att vara säker.';
     } else {
         moodText = 'Det är varmt och soligt, vilket kan ge dig en extra energiboost!';
         activityText = 'Besök en badplats, ta en glass eller ha en utomhusmiddag med vänner.';
+        clothingText = 'Lätta och luftiga kläder, solglasögon och solskydd. Ta med en tunn tröja för kvällen.';
     }
     
     // Väder-baserade rekommendationer
     if (weatherCode >= 500 && weatherCode < 600) {
         moodText += ' Regnet kan göra en lite melankolisk, men det är okej att känna så ibland.';
         activityText = 'Lyssna på lugn musik, meditera eller prova en ny hobby inomhus.';
+        clothingText += ' Ta med ett paraply och regnkläder. Vattentäta skor är viktigt.';
     } else if (weatherCode >= 800 && weatherCode < 900) {
         if (weatherCode === 800) {
             moodText += ' Soligt väder kan ge dig extra energi och positivitet!';
             activityText = 'Utnyttja solen genom att träna utomhus eller umgås med vänner.';
+            clothingText += ' Använd solskydd och en hatt för att skydda dig från solen.';
         } else {
             moodText += ' Molnigt väder kan göra en lite mer avslappnad och reflekterande.';
             activityText = 'Perfekt väder för att skriva i en dagbok eller planera kommande projekt.';
+            clothingText += ' En tunn jacka kan vara bra att ha med sig.';
         }
     }
     
     // Uppdatera UI med rekommendationer
     document.getElementById('mood-text').textContent = moodText;
     document.getElementById('activity-text').textContent = activityText;
+    document.getElementById('clothing-text').textContent = clothingText;
 }
 
 // Hantera sökning av stad
